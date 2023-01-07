@@ -33,7 +33,7 @@
     "role": "user",
     "resource": "Client",
     "action": "read:own",
-    "attributes": "*"
+    "attributes": "*,!id,!logoUrl"
   },
   {
     "role": "user",

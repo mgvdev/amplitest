@@ -11,11 +11,26 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsJSON } from "class-validator";
+import { ClientCreateNestedManyWithoutUsersInput } from "./ClientCreateNestedManyWithoutUsersInput";
+import { ValidateNested, IsOptional, IsString, IsJSON } from "class-validator";
+import { Type } from "class-transformer";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+
 @InputType()
 class UserCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClientCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => ClientCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => ClientCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  clients?: ClientCreateNestedManyWithoutUsersInput;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -61,4 +76,5 @@ class UserCreateInput {
   @Field(() => String)
   username!: string;
 }
+
 export { UserCreateInput };
