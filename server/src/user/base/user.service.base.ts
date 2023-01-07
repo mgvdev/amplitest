@@ -9,8 +9,8 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import { PrismaService } from "nestjs-prisma";
-import { Prisma, User } from "@prisma/client";
+import { PrismaService } from "../../prisma/prisma.service";
+import { Prisma, User, Client } from "@prisma/client";
 import { PasswordService } from "../../auth/password.service";
 import { transformStringFieldUpdateInput } from "../../prisma.util";
 
@@ -70,5 +70,16 @@ export class UserServiceBase {
     args: Prisma.SelectSubset<T, Prisma.UserDeleteArgs>
   ): Promise<User> {
     return this.prisma.user.delete(args);
+  }
+
+  async findClients(
+    parentId: string,
+    args: Prisma.ClientFindManyArgs
+  ): Promise<Client[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .clients(args);
   }
 }
